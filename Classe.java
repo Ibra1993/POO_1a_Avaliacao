@@ -104,6 +104,49 @@ class Main {
         imagem1.modificarPixel(1, 1, pixel1);
         imagem1.modificarPixel(1, 2, pixel1);
         imagem1.mostrarImagem();
+        
+        
+        
+        System.out.println("__________________________________________________");
+        System.out.println("Criando uma imagem em escala cinza");     
+        
+        System.out.println("Original");
+        imagem1.mostrarHexadecimal(); 
+        System.out.println("");
+        System.out.println("Cinza");
+        Imagem imagemC = imagem1.equivalenteCinza(imagem1);
+        imagemC.mostrarHexadecimal();
+        
+        
+        System.out.println("__________________________________________________");
+        System.out.println("Verificando se uma imagem é fragmento de outra"); 
+        Imagem imagemPrincipal = new Imagem(5, 5);//new Imagem(altura, largura)
+        Imagem imagemFragmento = new Imagem(3, 3);//new Imagem(altura, largura)
+        
+        System.out.println("Imagem principal");
+        imagemPrincipal.mostrarHexadecimal(); 
+        System.out.println("");
+        System.out.println("Imagem fragmento um");
+        imagemFragmento.mostrarHexadecimal();
+        System.out.println("");
+        System.out.println("É fragmento?");        
+        System.out.println(imagemPrincipal.fragmentoImagens(imagemFragmento));
+        System.out.println("");   
+        
+        Imagem imagemFragmento2 = new Imagem(3, 3);
+
+        
+        System.out.println("Imagem principal");
+        imagemPrincipal.mostrarHexadecimal(); 
+        System.out.println("");
+        System.out.println("Imagem fragmento dois");
+        imagemFragmento2.mostrarHexadecimal();
+        System.out.println("");
+        System.out.println("É fragmento?");        
+        System.out.println(imagemPrincipal.fragmentoImagens(imagemFragmento2));
+        System.out.println("");
+        
+        
     }
 }
 
