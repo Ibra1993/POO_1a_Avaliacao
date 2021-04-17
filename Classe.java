@@ -30,4 +30,114 @@ public class Imagem
             System.out.println("");
         }
     }
+    
+     //vi. método que crie uma nova imagem com o equivalente em tons de cinza. Essa imagem deve ter os valores de cada pixel da cor original substituido pelo seu equivalente em cor de cinza.
+    public Imagem equivalenteCinza(Imagem imagem){
+        Imagem imagemCinza = new Imagem(this.pixel.length, this.pixel[0].length);
+        int i, j;
+        for(i = 0; i < this.pixel.length; i++){
+            for(j = 0; j < this.pixel[0].length; j++){
+                imagemCinza.pixel[i][j] = this.pixel[i][j].novaInstanciaCinza(this.pixel[i][j]);
+            }
+        }
+        return imagemCinza;
+    }
+    
+        //vii. método que verifique se uma imagem é um fragmento da outra
+    public boolean fragmentoImagens(Imagem imagem){
+        //Imagem fragmento não rotacionada
+        //Altura vs Altura / Largura vs Largura
+        int tamanhoSemGiro = 0, tamanhoComGiro = 0;        
+        if((this.pixel.length >= imagem.pixel.length) && (this.pixel[0].length >= imagem.pixel[0].length)){
+            tamanhoSemGiro = 1;//Dimensões compatíveis
+        }else{
+            tamanhoSemGiro = 0;//Dimensões incompatíveis
+        }
+        //Imagem fragmento rotacionada
+        //Altura vs Largura
+        if((this.pixel.length >= imagem.pixel[0].length) && (this.pixel[0].length >= imagem.pixel.length)){
+            tamanhoComGiro = 1;//Dimensões rotacionadas compatíveis
+        }else{
+            tamanhoComGiro = 0;//Dimensões rotacionadas incompatíveis
+        }
+        //Comparando cada pixel das imagens informadas pelo usuário.
+        int i, j, l, c, rodar, rotacionar180Graus = 0;
+        int area = imagem.pixel.length * imagem.pixel[0].length;//Area do fragmento    
+        int areaCalculada = 0;//Variável incrementadora
+        int alturaPrincipal = this.pixel.length - imagem.pixel.length + 1;
+        int larguraPrincipal = this.pixel[0].length - imagem.pixel[0].length + 1;
+        if(tamanhoSemGiro == 1 || tamanhoComGiro == 1){
+            //Cada for representa uma rotação de 90 ou 180º
+            for(rodar = 0; rodar < 4; rodar++){
+                if(rotacionar180Graus > 1){
+                    //Se der uma rotacionada 180º por mais de uma vez, as imagens são incompatíveis
+                    return false;
+                }
+                if(tamanhoSemGiro == 0 && tamanhoComGiro == 1){
+                    //Dimensões só são compatíveis se rotacionar
+                    imagem = imagem.rotacionar(imagem);
+                }
+                //Percorrendo a imagem principal (procurando o primeiro pixel idêntico)
+                for(l = 0; l < alturaPrincipal; l++){
+                    for(c = 0; c < larguraPrincipal; c++){ 
+                        if(this.pixel[l][c].equals(imagem.pixel[0][0])){
+                            //Percorrendo a imagem fragmento
+                            for(i = 0; i < imagem.pixel.length; i++){
+                                for(j = 0; j < imagem.pixel[0].length; j++){
+                                    if(imagem.pixel[i][j].equals(this.pixel[i + l][j + c])){
+                                        //Incrementando a cada pixel idêntico
+                                        areaCalculada = areaCalculada + 1;
+                                        if(areaCalculada == area){
+                                            return true;
+                                        }
+                                    }
+                                }
+                            }
+                            areaCalculada = 0;//Zerando o contador, para o caso de não ter sido identificada a figura. 
+                        }
+                    }            
+                }
+                if(tamanhoSemGiro == 1 && tamanhoComGiro == 1){
+                    //Dimensões são compatíveis rotacionando ou não
+                    imagem = imagem.rotacionar(imagem);
+                }else if(tamanhoSemGiro == 1 && tamanhoComGiro == 0){
+                    //Dimensões só são compatíveis se não rotacionar
+                    imagem = imagem.rotacionar(imagem);
+                    imagem = imagem.rotacionar(imagem);
+                    rotacionar180Graus = rotacionar180Graus + 1;
+                }else if(tamanhoSemGiro == 0 && tamanhoComGiro == 1){
+                    //Dimensões só são compatíveis se rotacionar
+                    imagem = imagem.rotacionar(imagem);
+                    imagem = imagem.rotacionar(imagem);
+                    rotacionar180Graus = rotacionar180Graus + 1;
+                }            
+            }
+        }
+        return false;
+    }
+    
+     //Rotacionar imagem
+    public Imagem rotacionar(Imagem imagem){        
+        Imagem imagemRotacionada = new Imagem(this.pixel[0].length, this.pixel.length);
+        int i, j, cont = 0;
+        for(i = 0; i < imagemRotacionada.pixel.length; i++){
+            for(j = 0; j < imagemRotacionada.pixel[0].length; j++){
+                imagemRotacionada.pixel[i][j] = this.pixel[j][this.pixel[0].length - i - 1];
+            }
+        }        
+        return imagemRotacionada;
+    }
+    
+    //Mostrar hexadecimal
+    public void mostrarHexadecimal(){
+        int i, j;
+        for(i = 0; i < this.pixel.length; i++){
+            for(j = 0; j < this.pixel[0].length; j++){
+                System.out.print(this.pixel[i][j].hexadecimal());
+            }
+            System.out.println("");
+        }
+    }
+    
+    
 }
